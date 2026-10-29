@@ -13,6 +13,7 @@ The system model is a see–think–act chain: phenomenological sensors (radar, 
 
 | Document | Content |
 |---|---|
+| [docs/EVIDENCE_CONCEPT.md](docs/EVIDENCE_CONCEPT.md) | Evidence concept along the V: worst case first, tubes, measurement vs. model, residual monitor, transfer to staged acceptance (English) |
 | [docs/Kritische_Szenarien_L4-Shuttle.md](docs/Kritische_Szenarien_L4-Shuttle.md) | Concept, equations, results, gap analysis, open mathematical questions (German) |
 | [docs/ERGEBNISSE.md](docs/ERGEBNISSE.md) | Sensor-suite coverage study and back-calculation of requirements (German) |
 | [results_suite/Sensormodelle_Gesamtkette_Abdeckung.xlsx](results_suite/Sensormodelle_Gesamtkette_Abdeckung.xlsx) | Coverage, traceability to UN R157, assumptions, gaps to a real system |
