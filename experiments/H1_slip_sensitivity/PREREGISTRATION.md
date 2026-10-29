@@ -43,3 +43,11 @@ Effect sizes reported with them: ρ and partial ρ with a bootstrap 95 % CI over
 ## Limits known in advance
 
 All plant, sensor and brake parameters are assumptions (see the main document). The test speaks about this model, not about a real shuttle. The latency resolution is DT = 0.02 s.
+
+---
+
+## Addendum 29 Oct 2026, after the confirmatory run (the text above is unchanged)
+
+- File moved from `docs/PREREGISTRATION_H1.md` to this folder to separate experiments from code tests; result in `result.json` (was `results_verify/hyp_slip.json`).
+- Two bug fixes after the smoke run and before the confirmatory run, no design change (commit `fix(hyp_slip)`): sklearn keyword argument, and a NaN statistic (constant outcome) now yields p = 1 instead of a spurious rejection.
+- Outcome: see `RESULT.md`.

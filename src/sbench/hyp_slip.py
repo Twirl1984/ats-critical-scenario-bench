@@ -230,7 +230,7 @@ def run(n_scen: int = 60, quick: bool = False, workers: int = 4, n_perm: int = 2
         p3 = 1.0
     ps = {"H1": perm_p_less(spearman, J, M, n_perm, 0), "H2": perm_p_partial(J, M, R, n_perm, 1), "H3": p3}
     return {
-        "preregistration": "docs/PREREGISTRATION_H1.md", "confirmatory": not quick and n_scen == 60,
+        "preregistration": "experiments/H1_slip_sensitivity/PREREGISTRATION.md", "confirmatory": not quick and n_scen == 60,
         "versions": {"python": platform.python_version(), "numpy": np.__version__, "scipy": scipy.__version__,
                      "sklearn": sklearn.__version__},
         "n_estimators": len(rows), "n_scenarios": len(U),
@@ -248,14 +248,71 @@ def run(n_scen: int = 60, quick: bool = False, workers: int = 4, n_perm: int = 2
     }
 
 
+
+# ------------------------------------------------------------------ H1b: kontrollierte Sensitivität bei festem RMSE
+H1B_EPS = 0.002 * 2 ** 0.5
+H1B_OMEGA = (0.25, 0.5, 1.0, 2.0, 4.0, 8.0, 12.0, 16.0)
+H1B_PHI = (0.0, 2 * np.pi / 3, 4 * np.pi / 3)
+
+
+def h1b_estimators() -> list[dict]:
+    out = []
+    for w in H1B_OMEGA:
+        for k, ph in enumerate(H1B_PHI):
+            fn = (lambda w_, ph_: (lambda A, V: _phys_vec(A, V) + H1B_EPS * np.sin(w_ * np.asarray(A) + ph_)))(w, ph)
+            out.append({"id": f"w{w:g}_p{k}", "omega": w, "phi": float(ph), "tab": TabSlip(fn)})
+    return out
+
+
+def run_h1b(n_scen: int = 60, workers: int = 4, n_perm: int = 20000, quick: bool = False) -> dict:
+    from scipy.stats import wilcoxon
+
+    ests = h1b_estimators()
+    if quick:
+        ests = ests[::6]
+    phys = TabSlip(_phys_vec)
+    U = select_scenarios(n_scen)
+    with Pool(workers, initializer=_init, initargs=([phys] + [e["tab"] for e in ests], U)) as pool:
+        dts = pool.map(_job, range(len(ests) + 1))
+    phys_dt = np.array(dts[0])
+    rows = [{"id": e["id"], "omega": e["omega"], "phi": e["phi"], **estimator_metrics(e["tab"]),
+             "mean_dT": float(np.mean(d)), "dT": [float(x) for x in d]} for e, d in zip(ests, dts[1:])]
+    J = np.array([r["J"] for r in rows])
+    Mn = np.array([r["mean_dT"] for r in rows])
+    R = np.array([r["rmse"] for r in rows])
+    ref = next((r for r in rows if r["omega"] == 16.0 and r["phi"] == 0.0), rows[-1])
+    try:
+        p2 = float(wilcoxon(phys_dt, ref["dT"], zero_method="wilcox", alternative="greater").pvalue)
+    except ValueError:
+        p2 = 1.0
+    ps = {"H1b-1": perm_p_less(spearman, J, Mn, n_perm, 0), "H1b-2": p2}
+    by_w = {f"{w:g}": float(np.mean([r["mean_dT"] for r in rows if r["omega"] == w])) for w in H1B_OMEGA}
+    return {
+        "preregistration": "experiments/H1b_controlled_sensitivity/PREREGISTRATION.md",
+        "confirmatory": not quick and n_scen == 60, "n_estimators": len(rows), "n_scenarios": len(U),
+        "physical": {**estimator_metrics(phys), "mean_dT": float(np.mean(phys_dt)), "dT": [float(x) for x in phys_dt]},
+        "estimators": rows,
+        "effects": {"spearman_J_meandT": spearman(J, Mn), "ci95": boot_ci(spearman, [J, Mn]),
+                    "mean_dT_by_omega": by_w, "H1b-2_estimator": ref["id"],
+                    "H1b-2_mean_paired_diff_s": float(np.mean(phys_dt - np.array(ref["dT"]))),
+                    "exploratory_spearman_rmse_meandT": spearman(R, Mn)},
+        "tests": holm(ps),
+    }
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--n-scen", type=int, default=60)
     ap.add_argument("--quick", action="store_true")
     ap.add_argument("--workers", type=int, default=4)
-    ap.add_argument("--out", default="results_verify/hyp_slip.json")
+    ap.add_argument("--h1b", action="store_true", help="Folgetest H1b statt H1")
+    ap.add_argument("--out", default=None)
     a = ap.parse_args(argv)
-    res = run(a.n_scen, a.quick, a.workers, 2000 if a.quick else 20000)
+    if a.h1b:
+        res = run_h1b(a.n_scen, a.workers, 2000 if a.quick else 20000, a.quick)
+        a.out = a.out or "experiments/H1b_controlled_sensitivity/result.json"
+    else:
+        res = run(a.n_scen, a.quick, a.workers, 2000 if a.quick else 20000)
+        a.out = a.out or "experiments/H1_slip_sensitivity/result.json"
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(json.dumps(res, indent=1, sort_keys=True))
     print(json.dumps({k: res[k] for k in ("n_estimators", "n_scenarios", "effects", "tests")}, indent=1))
