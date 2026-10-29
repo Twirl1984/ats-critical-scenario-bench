@@ -1,0 +1,2 @@
+algo,found_valid_%,valid_fails,all_fails,implausible_%,unavoidable_%,first_valid_med,clusters,nn_dist,g_min,mean_nll,pf_valid,runtime_s
+ce_is,100.0,10.625,10.625,0.0,0.0,321.0,1.375,0.04176098741764714,-4.598268128404505,0.5921470054916612,0.0004203141491520017,13.305376797914505

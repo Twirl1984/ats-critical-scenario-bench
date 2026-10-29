@@ -1,0 +1,984 @@
+{
+ "n": 800,
+ "rows": [
+  {
+   "problem": "lead_brake",
+   "env": "klar_tag",
+   "n": 800,
+   "n_valid_pool": 676,
+   "suites": {
+    "ideal": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "radar": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "kamera": {
+     "rate": 0.125,
+     "n_fail": 1,
+     "excess": 0.125
+    },
+    "lidar": {
+     "rate": 0.625,
+     "n_fail": 5,
+     "excess": 0.625,
+     "range_factor_needed": 1.25
+    },
+    "radar+kamera": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "radar+lidar": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "radar+kamera+lidar": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    }
+   }
+  },
+  {
+   "problem": "lead_brake",
+   "env": "regen_nacht",
+   "n": 800,
+   "n_valid_pool": 676,
+   "suites": {
+    "ideal": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "radar": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "kamera": {
+     "rate": 10.0,
+     "n_fail": 80,
+     "excess": 10.0,
+     "range_factor_needed": 2.0
+    },
+    "lidar": {
+     "rate": 9.75,
+     "n_fail": 78,
+     "excess": 9.75,
+     "range_factor_needed": 2.0
+    },
+    "radar+kamera": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "radar+lidar": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "radar+kamera+lidar": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    }
+   }
+  },
+  {
+   "problem": "lead_brake",
+   "env": "nebel",
+   "n": 800,
+   "n_valid_pool": 676,
+   "suites": {
+    "ideal": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "radar": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "kamera": {
+     "rate": 20.0,
+     "n_fail": 160,
+     "excess": 20.0,
+     "range_factor_needed": 3.0
+    },
+    "lidar": {
+     "rate": 35.125,
+     "n_fail": 281,
+     "excess": 35.125,
+     "range_factor_needed": 3.0
+    },
+    "radar+kamera": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "radar+lidar": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "radar+kamera+lidar": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    }
+   }
+  },
+  {
+   "problem": "lead_brake",
+   "env": "gegenlicht",
+   "n": 800,
+   "n_valid_pool": 676,
+   "suites": {
+    "ideal": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "radar": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "kamera": {
+     "rate": 8.125,
+     "n_fail": 65,
+     "excess": 8.125,
+     "range_factor_needed": 2.0
+    },
+    "lidar": {
+     "rate": 0.625,
+     "n_fail": 5,
+     "excess": 0.625,
+     "range_factor_needed": 1.25
+    },
+    "radar+kamera": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "radar+lidar": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "radar+kamera+lidar": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    }
+   }
+  },
+  {
+   "problem": "lead_brake",
+   "env": "dunkles_ziel",
+   "n": 800,
+   "n_valid_pool": 676,
+   "suites": {
+    "ideal": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "radar": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "kamera": {
+     "rate": 0.125,
+     "n_fail": 1,
+     "excess": 0.125
+    },
+    "lidar": {
+     "rate": 9.75,
+     "n_fail": 78,
+     "excess": 9.75,
+     "range_factor_needed": 2.0
+    },
+    "radar+kamera": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "radar+lidar": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    },
+    "radar+kamera+lidar": {
+     "rate": 0.0,
+     "n_fail": 0,
+     "excess": 0.0
+    }
+   }
+  },
+  {
+   "problem": "cut_in",
+   "env": "klar_tag",
+   "n": 800,
+   "n_valid_pool": 458,
+   "suites": {
+    "ideal": {
+     "rate": 3.6249999999999996,
+     "n_fail": 29,
+     "excess": 0.0
+    },
+    "radar": {
+     "rate": 8.75,
+     "n_fail": 70,
+     "excess": 5.125,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 0.0,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 0.0,
+      "Latenz 0": 2.0,
+      "Sichtfeld ideal": 2.75,
+      "Station\u00e4rfilter weg": 0.0
+     },
+     "range_factor_needed": ">3.0"
+    },
+    "kamera": {
+     "rate": 4.625,
+     "n_fail": 37,
+     "excess": 1.0000000000000004,
+     "range_factor_needed": ">3.0"
+    },
+    "lidar": {
+     "rate": 7.000000000000001,
+     "n_fail": 56,
+     "excess": 3.3750000000000013,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera": {
+     "rate": 3.875,
+     "n_fail": 31,
+     "excess": 0.25000000000000044,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 0.0,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 0.0,
+      "Latenz 0": 2.875,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 0.0
+     }
+    },
+    "radar+lidar": {
+     "rate": 5.625,
+     "n_fail": 45,
+     "excess": 2.0000000000000004,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera+lidar": {
+     "rate": 4.125,
+     "n_fail": 33,
+     "excess": 0.5000000000000004,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 0.125,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 0.0,
+      "Latenz 0": 3.125,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 0.0
+     },
+     "range_factor_needed": ">3.0"
+    }
+   }
+  },
+  {
+   "problem": "cut_in",
+   "env": "regen_nacht",
+   "n": 800,
+   "n_valid_pool": 458,
+   "suites": {
+    "ideal": {
+     "rate": 3.6249999999999996,
+     "n_fail": 29,
+     "excess": 0.0
+    },
+    "radar": {
+     "rate": 8.75,
+     "n_fail": 70,
+     "excess": 5.125,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 0.0,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 0.0,
+      "Latenz 0": 2.0,
+      "Sichtfeld ideal": 2.75,
+      "Station\u00e4rfilter weg": 0.0
+     },
+     "range_factor_needed": ">3.0"
+    },
+    "kamera": {
+     "rate": 5.5,
+     "n_fail": 44,
+     "excess": 1.8750000000000004,
+     "range_factor_needed": ">3.0"
+    },
+    "lidar": {
+     "rate": 7.5,
+     "n_fail": 60,
+     "excess": 3.8750000000000004,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera": {
+     "rate": 3.875,
+     "n_fail": 31,
+     "excess": 0.25000000000000044,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 0.0,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 0.0,
+      "Latenz 0": 2.75,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 0.0
+     }
+    },
+    "radar+lidar": {
+     "rate": 5.875,
+     "n_fail": 47,
+     "excess": 2.2500000000000004,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera+lidar": {
+     "rate": 4.125,
+     "n_fail": 33,
+     "excess": 0.5000000000000004,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 0.125,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 0.0,
+      "Latenz 0": 2.875,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 0.0
+     },
+     "range_factor_needed": ">3.0"
+    }
+   }
+  },
+  {
+   "problem": "cut_in",
+   "env": "nebel",
+   "n": 800,
+   "n_valid_pool": 458,
+   "suites": {
+    "ideal": {
+     "rate": 3.6249999999999996,
+     "n_fail": 29,
+     "excess": 0.0
+    },
+    "radar": {
+     "rate": 8.75,
+     "n_fail": 70,
+     "excess": 5.125,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 0.0,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 0.0,
+      "Latenz 0": 2.0,
+      "Sichtfeld ideal": 2.75,
+      "Station\u00e4rfilter weg": 0.0
+     },
+     "range_factor_needed": ">3.0"
+    },
+    "kamera": {
+     "rate": 6.375,
+     "n_fail": 51,
+     "excess": 2.7500000000000004,
+     "range_factor_needed": ">3.0"
+    },
+    "lidar": {
+     "rate": 12.5,
+     "n_fail": 100,
+     "excess": 8.875,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera": {
+     "rate": 4.125,
+     "n_fail": 33,
+     "excess": 0.5000000000000004,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 0.25,
+      "Umweltverlust weg": 0.25,
+      "Rauschen weg": 0.0,
+      "Latenz 0": 3.0,
+      "Sichtfeld ideal": 0.125,
+      "Station\u00e4rfilter weg": 0.0
+     },
+     "range_factor_needed": 1.25
+    },
+    "radar+lidar": {
+     "rate": 6.25,
+     "n_fail": 50,
+     "excess": 2.6250000000000004,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera+lidar": {
+     "rate": 4.25,
+     "n_fail": 34,
+     "excess": 0.6250000000000004,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 0.25,
+      "Umweltverlust weg": 0.125,
+      "Rauschen weg": 0.0,
+      "Latenz 0": 3.0,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 0.0
+     },
+     "range_factor_needed": ">3.0"
+    }
+   }
+  },
+  {
+   "problem": "cut_in",
+   "env": "gegenlicht",
+   "n": 800,
+   "n_valid_pool": 458,
+   "suites": {
+    "ideal": {
+     "rate": 3.6249999999999996,
+     "n_fail": 29,
+     "excess": 0.0
+    },
+    "radar": {
+     "rate": 8.75,
+     "n_fail": 70,
+     "excess": 5.125,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 0.0,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 0.0,
+      "Latenz 0": 2.0,
+      "Sichtfeld ideal": 2.75,
+      "Station\u00e4rfilter weg": 0.0
+     },
+     "range_factor_needed": ">3.0"
+    },
+    "kamera": {
+     "rate": 5.125,
+     "n_fail": 41,
+     "excess": 1.5000000000000004,
+     "range_factor_needed": ">3.0"
+    },
+    "lidar": {
+     "rate": 7.000000000000001,
+     "n_fail": 56,
+     "excess": 3.3750000000000013,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera": {
+     "rate": 3.875,
+     "n_fail": 31,
+     "excess": 0.25000000000000044,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 0.0,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 0.0,
+      "Latenz 0": 2.75,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 0.0
+     }
+    },
+    "radar+lidar": {
+     "rate": 5.625,
+     "n_fail": 45,
+     "excess": 2.0000000000000004,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera+lidar": {
+     "rate": 4.125,
+     "n_fail": 33,
+     "excess": 0.5000000000000004,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 0.125,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 0.0,
+      "Latenz 0": 2.875,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 0.0
+     },
+     "range_factor_needed": ">3.0"
+    }
+   }
+  },
+  {
+   "problem": "cut_in",
+   "env": "dunkles_ziel",
+   "n": 800,
+   "n_valid_pool": 458,
+   "suites": {
+    "ideal": {
+     "rate": 3.6249999999999996,
+     "n_fail": 29,
+     "excess": 0.0
+    },
+    "radar": {
+     "rate": 8.75,
+     "n_fail": 70,
+     "excess": 5.125,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 0.0,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 0.0,
+      "Latenz 0": 2.0,
+      "Sichtfeld ideal": 2.75,
+      "Station\u00e4rfilter weg": 0.0
+     },
+     "range_factor_needed": ">3.0"
+    },
+    "kamera": {
+     "rate": 4.625,
+     "n_fail": 37,
+     "excess": 1.0000000000000004,
+     "range_factor_needed": ">3.0"
+    },
+    "lidar": {
+     "rate": 7.5,
+     "n_fail": 60,
+     "excess": 3.8750000000000004,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera": {
+     "rate": 3.875,
+     "n_fail": 31,
+     "excess": 0.25000000000000044,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 0.0,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 0.0,
+      "Latenz 0": 2.875,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 0.0
+     }
+    },
+    "radar+lidar": {
+     "rate": 5.875,
+     "n_fail": 47,
+     "excess": 2.2500000000000004,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera+lidar": {
+     "rate": 4.125,
+     "n_fail": 33,
+     "excess": 0.5000000000000004,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 0.125,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 0.0,
+      "Latenz 0": 3.125,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 0.0
+     },
+     "range_factor_needed": ">3.0"
+    }
+   }
+  },
+  {
+   "problem": "stopped_obstacle",
+   "env": "klar_tag",
+   "n": 800,
+   "n_valid_pool": 768,
+   "suites": {
+    "ideal": {
+     "rate": 8.0,
+     "n_fail": 64,
+     "excess": 0.0
+    },
+    "radar": {
+     "rate": 72.25,
+     "n_fail": 578,
+     "excess": 64.25,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 29.125,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 6.25,
+      "Latenz 0": 16.5,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 54.125
+     },
+     "range_factor_needed": ">3.0"
+    },
+    "kamera": {
+     "rate": 56.99999999999999,
+     "n_fail": 456,
+     "excess": 48.99999999999999,
+     "range_factor_needed": ">3.0"
+    },
+    "lidar": {
+     "rate": 61.75000000000001,
+     "n_fail": 494,
+     "excess": 53.75000000000001,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera": {
+     "rate": 15.125,
+     "n_fail": 121,
+     "excess": 7.125,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 3.125,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 0.75,
+      "Latenz 0": 7.375,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 4.75
+     },
+     "range_factor_needed": ">3.0"
+    },
+    "radar+lidar": {
+     "rate": 14.374999999999998,
+     "n_fail": 115,
+     "excess": 6.374999999999998,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera+lidar": {
+     "rate": 12.0,
+     "n_fail": 96,
+     "excess": 4.0,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 2.125,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 0.375,
+      "Latenz 0": 5.875,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 2.75
+     },
+     "range_factor_needed": ">3.0"
+    }
+   }
+  },
+  {
+   "problem": "stopped_obstacle",
+   "env": "regen_nacht",
+   "n": 800,
+   "n_valid_pool": 768,
+   "suites": {
+    "ideal": {
+     "rate": 8.0,
+     "n_fail": 64,
+     "excess": 0.0
+    },
+    "radar": {
+     "rate": 72.5,
+     "n_fail": 580,
+     "excess": 64.5,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 29.5,
+      "Umweltverlust weg": 1.375,
+      "Rauschen weg": 5.875,
+      "Latenz 0": 16.5,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 53.75
+     },
+     "range_factor_needed": ">3.0"
+    },
+    "kamera": {
+     "rate": 89.75,
+     "n_fail": 718,
+     "excess": 81.75,
+     "range_factor_needed": ">3.0"
+    },
+    "lidar": {
+     "rate": 87.375,
+     "n_fail": 699,
+     "excess": 79.375,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera": {
+     "rate": 22.75,
+     "n_fail": 182,
+     "excess": 14.75,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 10.125,
+      "Umweltverlust weg": 8.5,
+      "Rauschen weg": 2.125,
+      "Latenz 0": 12.0,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 8.75
+     },
+     "range_factor_needed": ">3.0"
+    },
+    "radar+lidar": {
+     "rate": 18.25,
+     "n_fail": 146,
+     "excess": 10.25,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera+lidar": {
+     "rate": 15.625,
+     "n_fail": 125,
+     "excess": 7.625,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 4.75,
+      "Umweltverlust weg": 4.25,
+      "Rauschen weg": 1.75,
+      "Latenz 0": 7.0,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 4.625
+     },
+     "range_factor_needed": ">3.0"
+    }
+   }
+  },
+  {
+   "problem": "stopped_obstacle",
+   "env": "nebel",
+   "n": 800,
+   "n_valid_pool": 768,
+   "suites": {
+    "ideal": {
+     "rate": 8.0,
+     "n_fail": 64,
+     "excess": 0.0
+    },
+    "radar": {
+     "rate": 72.25,
+     "n_fail": 578,
+     "excess": 64.25,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 29.125,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 6.25,
+      "Latenz 0": 16.5,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 54.125
+     },
+     "range_factor_needed": ">3.0"
+    },
+    "kamera": {
+     "rate": 93.875,
+     "n_fail": 751,
+     "excess": 85.875,
+     "range_factor_needed": ">3.0"
+    },
+    "lidar": {
+     "rate": 95.625,
+     "n_fail": 765,
+     "excess": 87.625,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera": {
+     "rate": 23.375,
+     "n_fail": 187,
+     "excess": 15.375,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 11.125,
+      "Umweltverlust weg": 9.375,
+      "Rauschen weg": 2.75,
+      "Latenz 0": 11.625,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 10.125
+     },
+     "range_factor_needed": ">3.0"
+    },
+    "radar+lidar": {
+     "rate": 19.875,
+     "n_fail": 159,
+     "excess": 11.875,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera+lidar": {
+     "rate": 18.0,
+     "n_fail": 144,
+     "excess": 10.0,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 7.375,
+      "Umweltverlust weg": 6.25,
+      "Rauschen weg": 1.75,
+      "Latenz 0": 8.75,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 6.0
+     },
+     "range_factor_needed": ">3.0"
+    }
+   }
+  },
+  {
+   "problem": "stopped_obstacle",
+   "env": "gegenlicht",
+   "n": 800,
+   "n_valid_pool": 768,
+   "suites": {
+    "ideal": {
+     "rate": 8.0,
+     "n_fail": 64,
+     "excess": 0.0
+    },
+    "radar": {
+     "rate": 72.25,
+     "n_fail": 578,
+     "excess": 64.25,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 29.125,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 6.25,
+      "Latenz 0": 16.5,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 54.125
+     },
+     "range_factor_needed": ">3.0"
+    },
+    "kamera": {
+     "rate": 86.625,
+     "n_fail": 693,
+     "excess": 78.625,
+     "range_factor_needed": ">3.0"
+    },
+    "lidar": {
+     "rate": 61.75000000000001,
+     "n_fail": 494,
+     "excess": 53.75000000000001,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera": {
+     "rate": 21.625,
+     "n_fail": 173,
+     "excess": 13.625,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 9.0,
+      "Umweltverlust weg": 7.375,
+      "Rauschen weg": 1.875,
+      "Latenz 0": 11.125,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 8.125
+     },
+     "range_factor_needed": ">3.0"
+    },
+    "radar+lidar": {
+     "rate": 14.374999999999998,
+     "n_fail": 115,
+     "excess": 6.374999999999998,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera+lidar": {
+     "rate": 13.750000000000002,
+     "n_fail": 110,
+     "excess": 5.750000000000002,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 3.5,
+      "Umweltverlust weg": 2.375,
+      "Rauschen weg": 0.75,
+      "Latenz 0": 5.75,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 2.875
+     },
+     "range_factor_needed": ">3.0"
+    }
+   }
+  },
+  {
+   "problem": "stopped_obstacle",
+   "env": "dunkles_ziel",
+   "n": 800,
+   "n_valid_pool": 768,
+   "suites": {
+    "ideal": {
+     "rate": 8.0,
+     "n_fail": 64,
+     "excess": 0.0
+    },
+    "radar": {
+     "rate": 72.25,
+     "n_fail": 578,
+     "excess": 64.25,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 29.125,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 6.25,
+      "Latenz 0": 16.5,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 54.125
+     },
+     "range_factor_needed": ">3.0"
+    },
+    "kamera": {
+     "rate": 56.99999999999999,
+     "n_fail": 456,
+     "excess": 48.99999999999999,
+     "range_factor_needed": ">3.0"
+    },
+    "lidar": {
+     "rate": 87.375,
+     "n_fail": 699,
+     "excess": 79.375,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera": {
+     "rate": 15.125,
+     "n_fail": 121,
+     "excess": 7.125,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 3.125,
+      "Umweltverlust weg": 0.0,
+      "Rauschen weg": 0.75,
+      "Latenz 0": 7.375,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 4.75
+     },
+     "range_factor_needed": ">3.0"
+    },
+    "radar+lidar": {
+     "rate": 17.125,
+     "n_fail": 137,
+     "excess": 9.125,
+     "range_factor_needed": ">3.0"
+    },
+    "radar+kamera+lidar": {
+     "rate": 12.5,
+     "n_fail": 100,
+     "excess": 4.5,
+     "ablation_pp": {
+      "Erkennung/Reichweite ideal": 2.375,
+      "Umweltverlust weg": 1.5,
+      "Rauschen weg": 0.625,
+      "Latenz 0": 6.125,
+      "Sichtfeld ideal": 0.0,
+      "Station\u00e4rfilter weg": 2.875
+     },
+     "range_factor_needed": ">3.0"
+    }
+   }
+  }
+ ],
+ "false_brake": {
+  "ideal": {
+   "false_brake_pct": 0.0,
+   "ghost_per_run": 0.0
+  },
+  "radar": {
+   "false_brake_pct": 5.0,
+   "ghost_per_run": 0.056
+  },
+  "kamera": {
+   "false_brake_pct": 0.2,
+   "ghost_per_run": 0.04
+  },
+  "lidar": {
+   "false_brake_pct": 0.0,
+   "ghost_per_run": 0.0
+  },
+  "radar+kamera": {
+   "false_brake_pct": 6.0,
+   "ghost_per_run": 0.08
+  },
+  "radar+lidar": {
+   "false_brake_pct": 3.5999999999999996,
+   "ghost_per_run": 0.042
+  },
+  "radar+kamera+lidar": {
+   "false_brake_pct": 7.199999999999999,
+   "ghost_per_run": 0.082
+  }
+ }
+}

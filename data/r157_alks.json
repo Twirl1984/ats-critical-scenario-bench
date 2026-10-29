@@ -1,0 +1,335 @@
+{
+  "metadata": {
+    "standard": "UN R157",
+    "title": "Uniform provisions concerning the approval of vehicles with regard to Automated Lane Keeping Systems",
+    "version": "1.0",
+    "generated_date": "2026-06-10T10:54:53.068060",
+    "source_document": "ECE/TRANS/505/Rev.3/Add.156",
+    "total_requirements": 16
+  },
+  "requirements": [
+    {
+      "standard": "R157",
+      "req_id": "R157-5.1.1",
+      "clause": "5.1.1",
+      "section": "System Safety and Fail-safe Response",
+      "title": "General \u2013 DDT Performance and Collision Avoidance",
+      "text": "The activated system shall perform the DDT shall manage all situations including failures, and shall be free of unreasonable risks for the vehicle occupants or any other road users. The activated system shall not cause any collisions that are reasonably foreseeable and preventable.",
+      "obligation": "Shall",
+      "risk_level": "Critical",
+      "assessment_question": "Does the ALKS system manage all driving situations without causing preventable collisions?",
+      "pass_criteria": "System demonstrates failure-free operation and avoids all reasonably foreseeable collisions in test scenarios.",
+      "odd_parameters": [
+        "speed_0_to_60_kmh",
+        "divided_highway_only",
+        "no_pedestrians",
+        "physical_separation"
+      ],
+      "test_scenarios": [
+        "lane_keeping",
+        "obstacle_avoidance",
+        "emergency_manoeuvre"
+      ],
+      "source": "un_r157_regulation_section_5"
+    },
+    {
+      "standard": "R157",
+      "req_id": "R157-5.2.1",
+      "clause": "5.2.1",
+      "section": "Dynamic Driving Task",
+      "title": "Lane Keeping \u2013 Lateral Position Stability",
+      "text": "The activated system shall keep the vehicle inside its lane of travel and ensure that the vehicle does not cross any lane marking (outer edge of the front tyre to outer edge of the lane marking). The system shall aim to keep the vehicle in a stable lateral position inside the lane of travel.",
+      "obligation": "Shall",
+      "risk_level": "High",
+      "assessment_question": "Does the ALKS maintain stable lateral position and avoid crossing lane markings?",
+      "pass_criteria": "Vehicle stays within lane boundaries across all test speeds and road curvatures.",
+      "odd_parameters": [
+        "speed_range",
+        "curve_radius",
+        "lane_width"
+      ],
+      "test_scenarios": [
+        "straight_lane_5min",
+        "curved_section",
+        "swerving_lead_vehicle"
+      ],
+      "thresholds": {
+        "max_lateral_deviation_m": 0.375
+      },
+      "source": "un_r157_regulation_section_5.2"
+    },
+    {
+      "standard": "R157",
+      "req_id": "R157-5.2.3.1",
+      "clause": "5.2.3.1",
+      "section": "Dynamic Driving Task",
+      "title": "Speed Control \u2013 Maximum Operating Speed",
+      "text": "The maximum speed up to which the system is permitted to operate is 60 km/h.",
+      "obligation": "Shall",
+      "risk_level": "High",
+      "assessment_question": "Is the ALKS system speed capped at 60 km/h maximum?",
+      "pass_criteria": "System prevents operation above 60 km/h; transitions to manual control if exceeded.",
+      "odd_parameters": [
+        "max_speed_kmh"
+      ],
+      "test_scenarios": [
+        "speed_limit_enforcement"
+      ],
+      "thresholds": {
+        "max_operational_speed_kmh": 60
+      },
+      "source": "un_r157_regulation_section_5.2.3"
+    },
+    {
+      "standard": "R157",
+      "req_id": "R157-5.2.3.3",
+      "clause": "5.2.3.3",
+      "section": "Dynamic Driving Task",
+      "title": "Speed Control \u2013 Following Distance",
+      "text": "The activated system shall detect the distance to the next vehicle in front and shall adapt the vehicle speed in order to avoid collision. The minimum following distance shall be calculated using: dmin = vALKS * tfront, where tfront ranges from 1.0s at 7.2km/h to 1.6s at 60km/h.",
+      "obligation": "Shall",
+      "risk_level": "Critical",
+      "assessment_question": "Does the ALKS maintain minimum safe following distance based on speed-dependent time gap?",
+      "pass_criteria": "Measured following distance meets or exceeds calculated minimum for each speed; collision avoided.",
+      "odd_parameters": [
+        "speed_kmh"
+      ],
+      "test_scenarios": [
+        "following_lead_vehicle",
+        "lead_vehicle_deceleration",
+        "cut_in_scenario"
+      ],
+      "thresholds": {
+        "min_time_gap_1_kmh_s": 1.0,
+        "min_time_gap_60_kmh_s": 1.6,
+        "min_distance_2ms_m": 2.0
+      },
+      "source": "un_r157_regulation_section_5.2.3"
+    },
+    {
+      "standard": "R157",
+      "req_id": "R157-5.2.5",
+      "clause": "5.2.5",
+      "section": "Dynamic Driving Task",
+      "title": "Collision Avoidance \u2013 Risk Mitigation",
+      "text": "The activated system shall detect the risk of collision in particular with another road user ahead or beside the vehicle, due to a decelerating lead vehicle, a cutting in vehicle or a suddenly appearing obstacle and shall automatically perform appropriate manoeuvres to minimize risks.",
+      "obligation": "Shall",
+      "risk_level": "Critical",
+      "assessment_question": "Does the ALKS detect and automatically mitigate collision risks from various traffic scenarios?",
+      "pass_criteria": "System avoids collisions in cut-in, cut-out, and deceleration scenarios within defined TTC/distance thresholds.",
+      "test_scenarios": [
+        "deceleration_avoidance",
+        "cut_in_avoidance",
+        "cut_out_avoidance",
+        "pedestrian_crossing"
+      ],
+      "source": "un_r157_regulation_section_5.2.5"
+    },
+    {
+      "standard": "R157",
+      "req_id": "R157-5.2.5.1",
+      "clause": "5.2.5.1",
+      "section": "Dynamic Driving Task",
+      "title": "Collision Avoidance \u2013 Decelerating Lead Vehicle",
+      "text": "The activated system shall avoid a collision with a leading vehicle which decelerates up to its full braking performance provided that there was no undercut of the minimum following distance.",
+      "obligation": "Shall",
+      "risk_level": "Critical",
+      "assessment_question": "Does the ALKS avoid collision when lead vehicle decelerates up to full braking?",
+      "pass_criteria": "No collision in deceleration scenarios at any speed up to 60 km/h.",
+      "test_scenarios": [
+        "lead_vehicle_6ms2_deceleration"
+      ],
+      "thresholds": {
+        "max_lead_deceleration_ms2": 6.0
+      },
+      "source": "un_r157_regulation_section_5.2.5.1"
+    },
+    {
+      "standard": "R157",
+      "req_id": "R157-5.2.5.2",
+      "clause": "5.2.5.2",
+      "section": "Dynamic Driving Task",
+      "title": "Collision Avoidance \u2013 Cutting-in Vehicle",
+      "text": "The activated system shall avoid a collision with a cutting in vehicle when: (a) the cutting-in vehicle maintains lower longitudinal speed than ALKS; (b) lateral movement visible for at least 0.72 seconds; (c) TTC > vrel/(2\u00b76m/s\u00b2) + 0.35s",
+      "obligation": "Shall",
+      "risk_level": "Critical",
+      "assessment_question": "Does the ALKS avoid collision with vehicles cutting into its lane?",
+      "pass_criteria": "No collision in cut-in scenarios meeting criteria (a), (b), (c) across test speeds.",
+      "test_scenarios": [
+        "cut_in_various_velocities",
+        "cut_in_visibility_requirement"
+      ],
+      "thresholds": {
+        "min_lateral_visibility_s": 0.72,
+        "ttc_margin_s": 0.35,
+        "max_deceleration_ms2": 6.0
+      },
+      "source": "un_r157_regulation_section_5.2.5.2"
+    },
+    {
+      "standard": "R157",
+      "req_id": "R157-5.3.1",
+      "clause": "5.3.1",
+      "section": "Emergency Manoeuvre",
+      "title": "Emergency Manoeuvre \u2013 Activation Threshold",
+      "text": "An Emergency Manoeuvre shall be carried out in case of an imminent collision risk. Any longitudinal deceleration demand of more than 5.0 m/s\u00b2 of the system shall be considered to be an EM.",
+      "obligation": "Shall",
+      "risk_level": "Critical",
+      "assessment_question": "Does the ALKS execute emergency manoeuvres (>5.0m/s\u00b2 deceleration) for imminent collision risks?",
+      "pass_criteria": "EM triggered automatically when collision risk detected; deceleration \u22655.0m/s\u00b2.",
+      "test_scenarios": [
+        "emergency_braking_trigger"
+      ],
+      "thresholds": {
+        "em_deceleration_threshold_ms2": 5.0
+      },
+      "source": "un_r157_regulation_section_5.3"
+    },
+    {
+      "standard": "R157",
+      "req_id": "R157-5.4.1",
+      "clause": "5.4.1",
+      "section": "Transition Demand",
+      "title": "Transition Demand \u2013 Situation Recognition",
+      "text": "The activated system shall recognise all situations in which it needs to transition the control back to the driver. Types of situations shall be declared by the manufacturer.",
+      "obligation": "Shall",
+      "risk_level": "High",
+      "assessment_question": "Does the ALKS recognize and transition on all declared ODD boundary and failure conditions?",
+      "pass_criteria": "System transitions (or initiates MRM) on all declared planned/unplanned events and failures.",
+      "test_scenarios": [
+        "ood_boundary_crossing",
+        "failure_detection",
+        "road_construction_zone"
+      ],
+      "source": "un_r157_regulation_section_5.4"
+    },
+    {
+      "standard": "R157",
+      "req_id": "R157-5.4.2",
+      "clause": "5.4.2",
+      "section": "Transition Demand",
+      "title": "Transition Demand \u2013 Timing",
+      "text": "The initiation of the transition demand shall be such that sufficient time is provided for a safe transition to manual driving. For planned events, transition shall be given early enough to ensure MRM would bring vehicle to standstill before event. For unplanned events, transition demand upon detection.",
+      "obligation": "Shall",
+      "risk_level": "High",
+      "assessment_question": "Does transition demand provide sufficient time for safe manual takeover or MRM execution?",
+      "pass_criteria": "MRM (if executed) stops vehicle before ODD boundary; driver has minimum 10s before MRM triggers.",
+      "test_scenarios": [
+        "planned_transition_timing",
+        "unplanned_event_timing"
+      ],
+      "thresholds": {
+        "min_transition_time_s": 10
+      },
+      "source": "un_r157_regulation_section_5.4.2"
+    },
+    {
+      "standard": "R157",
+      "req_id": "R157-5.5.1",
+      "clause": "5.5.1",
+      "section": "Minimum Risk Manoeuvre",
+      "title": "MRM \u2013 Deceleration and Stop",
+      "text": "During the minimum risk manoeuvre the vehicle shall be slowed down with deceleration not greater than 4.0 m/s\u00b2. Higher deceleration values are permissible for brief periods (e.g., as haptic warning). The MRM shall bring vehicle to standstill.",
+      "obligation": "Shall",
+      "risk_level": "High",
+      "assessment_question": "Does the ALKS execute MRM with \u22644.0m/s\u00b2 deceleration and stop the vehicle safely?",
+      "pass_criteria": "Vehicle comes to stop with smooth deceleration profile; max 4.0m/s\u00b2 (except brief haptic warnings).",
+      "test_scenarios": [
+        "mrm_deceleration_profile",
+        "mrm_to_standstill"
+      ],
+      "thresholds": {
+        "max_mrm_deceleration_ms2": 4.0
+      },
+      "source": "un_r157_regulation_section_5.5"
+    },
+    {
+      "standard": "R157",
+      "req_id": "R157-6.1.1",
+      "clause": "6.1.1",
+      "section": "HMI \u2013 Driver Availability",
+      "title": "Driver Availability Recognition System",
+      "text": "The system shall comprise a driver availability recognition system. The driver shall be deemed unavailable unless at least two availability criteria have determined driver is available in last 30 seconds.",
+      "obligation": "Shall",
+      "risk_level": "High",
+      "assessment_question": "Does the ALKS monitor and enforce driver availability using multiple criteria?",
+      "pass_criteria": "Driver availability system operational; transitions triggered if <2 criteria in 30s window.",
+      "test_scenarios": [
+        "driver_availability_monitoring"
+      ],
+      "thresholds": {
+        "availability_criteria_minimum": 2,
+        "monitoring_window_s": 30
+      },
+      "source": "un_r157_regulation_section_6.1"
+    },
+    {
+      "standard": "R157",
+      "req_id": "R157-6.2.2",
+      "clause": "6.2.2",
+      "section": "HMI \u2013 Activation/Deactivation",
+      "title": "System Default State \u2013 Off Mode",
+      "text": "The default status of the system shall be the off mode at the initiation of each new engine start/run cycle.",
+      "obligation": "Shall",
+      "risk_level": "Medium",
+      "assessment_question": "Is the ALKS disabled (off mode) at each engine start by default?",
+      "pass_criteria": "System does not auto-activate; requires deliberate driver action to activate.",
+      "test_scenarios": [
+        "engine_start_off_mode"
+      ],
+      "source": "un_r157_regulation_section_6.2.2"
+    },
+    {
+      "standard": "R157",
+      "req_id": "R157-6.3.1",
+      "clause": "6.3.1",
+      "section": "HMI \u2013 System Override",
+      "title": "Steering Control Override",
+      "text": "A driver input to the steering control shall override the lateral control function of the system when the input exceeds a reasonable threshold designed to prevent unintentional override. Threshold shall include specified force and duration.",
+      "obligation": "Shall",
+      "risk_level": "High",
+      "assessment_question": "Can the driver override lateral control via steering input above defined threshold?",
+      "pass_criteria": "Steering override functions; requires force/duration threshold; prevents accidental override.",
+      "test_scenarios": [
+        "steering_override_threshold"
+      ],
+      "source": "un_r157_regulation_section_6.3"
+    },
+    {
+      "standard": "R157",
+      "req_id": "R157-7.1.1",
+      "clause": "7.1.1",
+      "section": "OEDR \u2013 Sensing",
+      "title": "Forward Detection Range",
+      "text": "The manufacturer shall declare the forward detection range measured from the forward most point of the vehicle. This declared value shall be at least 46 metres.",
+      "obligation": "Shall",
+      "risk_level": "High",
+      "assessment_question": "Does the ALKS sensing system detect obstacles at declared range \u226546m forward?",
+      "pass_criteria": "Forward detection range verified \u226546m; measured in tests per Annex 5.",
+      "test_scenarios": [
+        "forward_detection_range_test"
+      ],
+      "thresholds": {
+        "min_forward_detection_range_m": 46
+      },
+      "source": "un_r157_regulation_section_7.1"
+    },
+    {
+      "standard": "R157",
+      "req_id": "R157-7.1.2",
+      "clause": "7.1.2",
+      "section": "OEDR \u2013 Sensing",
+      "title": "Lateral Detection Range",
+      "text": "The manufacturer shall declare the lateral detection range sufficient to cover the full width of the lane immediately to the left and right of the vehicle.",
+      "obligation": "Shall",
+      "risk_level": "High",
+      "assessment_question": "Does the ALKS sense vehicles in adjacent lanes (full lateral width) up to declared range?",
+      "pass_criteria": "Lateral detection verified for adjacent lanes; range covers lane width + margins.",
+      "test_scenarios": [
+        "lateral_detection_range_test",
+        "vehicle_beside_detection"
+      ],
+      "source": "un_r157_regulation_section_7.1"
+    }
+  ]
+}

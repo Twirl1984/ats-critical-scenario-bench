@@ -1,0 +1,288 @@
+{
+ "trace": [
+  {
+   "req_id": "R157-5.1.1",
+   "title": "General \u2013 DDT Performance and Collision Avoidance",
+   "risk": "Critical",
+   "test_scenarios": [
+    "lane_keeping",
+    "obstacle_avoidance",
+    "emergency_manoeuvre"
+   ],
+   "thresholds": null,
+   "bench": "alle ODD-Probleme",
+   "phenomena": "Erkennung, Rauschen, Latenz",
+   "coverage": "teilweise",
+   "note": "nur L\u00e4ngsdynamik; lane_keeping/emergency_manoeuvre-Anteile quer nicht abbildbar"
+  },
+  {
+   "req_id": "R157-5.2.3.3",
+   "title": "Speed Control \u2013 Following Distance",
+   "risk": "Critical",
+   "test_scenarios": [
+    "following_lead_vehicle",
+    "lead_vehicle_deceleration",
+    "cut_in_scenario"
+   ],
+   "thresholds": {
+    "min_time_gap_1_kmh_s": 1.0,
+    "min_time_gap_60_kmh_s": 1.6,
+    "min_distance_2ms_m": 2.0
+   },
+   "bench": "lead_brake_odd",
+   "phenomena": "Distanz-/Raten-Rauschen, Latenz",
+   "coverage": "teilweise",
+   "note": "Zeitl\u00fccke 1,0\u20131,6 s als Regelziel der ACC-Logik; im Bench nur indirekt (Min-Gap)"
+  },
+  {
+   "req_id": "R157-5.2.5",
+   "title": "Collision Avoidance \u2013 Risk Mitigation",
+   "risk": "Critical",
+   "test_scenarios": [
+    "deceleration_avoidance",
+    "cut_in_avoidance",
+    "cut_out_avoidance",
+    "pedestrian_crossing"
+   ],
+   "thresholds": null,
+   "bench": "lead_brake_odd, cut_in_odd, stopped_obstacle_odd",
+   "phenomena": "Erkennung, Sichtfeld, Latenz",
+   "coverage": "teilweise",
+   "note": "cut_out_avoidance und pedestrian_crossing: nicht abbildbar (kein Quer-/Fu\u00dfg\u00e4ngermodell, ODD: keine Fu\u00dfg\u00e4nger)"
+  },
+  {
+   "req_id": "R157-5.2.5.1",
+   "title": "Collision Avoidance \u2013 Decelerating Lead Vehicle",
+   "risk": "Critical",
+   "test_scenarios": [
+    "lead_vehicle_6ms2_deceleration"
+   ],
+   "thresholds": {
+    "max_lead_deceleration_ms2": 6.0
+   },
+   "bench": "lead_brake_odd",
+   "phenomena": "Reichweite, Rate (Doppler), Latenz",
+   "coverage": "ja",
+   "note": "Lead-Verz\u00f6gerung \u2264 6 m/s\u00b2 als Prior-Grenze"
+  },
+  {
+   "req_id": "R157-5.2.5.2",
+   "title": "Collision Avoidance \u2013 Cutting-in Vehicle",
+   "risk": "Critical",
+   "test_scenarios": [
+    "cut_in_various_velocities",
+    "cut_in_visibility_requirement"
+   ],
+   "thresholds": {
+    "min_lateral_visibility_s": 0.72,
+    "ttc_margin_s": 0.35,
+    "max_deceleration_ms2": 6.0
+   },
+   "bench": "cut_in_odd",
+   "phenomena": "Sichtfeld (p_det), Latenz, Rate",
+   "coverage": "teilweise",
+   "note": "min_lateral_visibility 0,72 s / ttc_margin 0,35 s nur \u00fcber Fortschritts-Schwelle p_det abgebildet"
+  },
+  {
+   "req_id": "R157-5.3.1",
+   "title": "Emergency Manoeuvre \u2013 Activation Threshold",
+   "risk": "Critical",
+   "test_scenarios": [
+    "emergency_braking_trigger"
+   ],
+   "thresholds": {
+    "em_deceleration_threshold_ms2": 5.0
+   },
+   "bench": "lead_brake_odd, stopped_obstacle_odd",
+   "phenomena": "Latenz, Ausl\u00f6seschwelle",
+   "coverage": "teilweise",
+   "note": "EM-Schwelle 5 m/s\u00b2 vs. AEB-Stufe 1 = \u22124 m/s\u00b2: Stufenlogik gegen Anforderung pr\u00fcfen"
+  },
+  {
+   "req_id": "R157-7.1.1",
+   "title": "Forward Detection Range",
+   "risk": "High",
+   "test_scenarios": [
+    "forward_detection_range_test"
+   ],
+   "thresholds": {
+    "min_forward_detection_range_m": 46
+   },
+   "bench": "stopped_obstacle_odd",
+   "phenomena": "Erkennungsreichweite R*",
+   "coverage": "ja",
+   "note": "46 m Mindestreichweite gegen berechnetes R* je Szenario"
+  },
+  {
+   "req_id": "R157-7.1.2",
+   "title": "Lateral Detection Range",
+   "risk": "High",
+   "test_scenarios": [
+    "lateral_detection_range_test",
+    "vehicle_beside_detection"
+   ],
+   "thresholds": null,
+   "bench": "cut_in_odd",
+   "phenomena": "Sichtfeld seitlich",
+   "coverage": "teilweise",
+   "note": "seitliche Reichweite nur als Zeitpunkt der Erkennung (p_det)"
+  }
+ ],
+ "not_covered": [
+  "R157-5.2.1 (Spurhaltung quer)",
+  "R157-5.2.3.1 (H\u00f6chstgeschwindigkeit)",
+  "R157-5.4.1/5.4.2 (\u00dcbernahmeaufforderung)",
+  "R157-5.5.1 (MRM bis Stillstand)",
+  "R157-6.1.1 (Fahrerverf\u00fcgbarkeit)",
+  "R157-6.2.2 (Off-Mode)",
+  "R157-6.3.1 (Lenk\u00fcbersteuerung)"
+ ],
+ "chain_latency_assumed": {
+  "ideal": 0.0,
+  "lidar": 0.15000000000000002,
+  "radar": 0.13,
+  "kamera": 0.153
+ },
+ "budgets": [
+  {
+   "problem": "lead_brake_odd",
+   "n_valid": 245,
+   "lat_for_R": 0.2,
+   "dT_quantiles": {
+    "p05": 0.9873046875,
+    "p50": 1.248046875,
+    "p95": 1.48828125
+   },
+   "ds_quantiles": {
+    "p05": 3.72265625,
+    "p50": 6.4453125,
+    "p95": 18.91015625
+   },
+   "R_quantiles": {
+    "p05": 0.48828125,
+    "p50": 9.765625,
+    "p95": 18.945312499999993
+   },
+   "share_dT_below": {
+    "0.1": 0.0,
+    "0.2": 0.0,
+    "0.3": 0.0,
+    "0.5": 0.0
+   },
+   "share_already_failing": 0.0,
+   "share_R_above": {
+    "30": 0.0,
+    "46": 0.0,
+    "60": 0.0,
+    "100": 0.0
+   },
+   "share_R_unavoidable_by_logic": 0.0
+  },
+  {
+   "problem": "cut_in_odd",
+   "n_valid": 237,
+   "lat_for_R": 0.2,
+   "dT_quantiles": {
+    "p05": 0.06518554687500001,
+    "p50": 1.1279296875,
+    "p95": 1.4677734375
+   },
+   "ds_quantiles": {
+    "p05": 3.546875,
+    "p50": 7.96875,
+    "p95": 24.31249999999996
+   },
+   "R_quantiles": {
+    "p05": 0.48828125,
+    "p50": 5.37109375,
+    "p95": 12.6953125
+   },
+   "share_dT_below": {
+    "0.1": 0.016877637130801686,
+    "0.2": 0.02531645569620253,
+    "0.3": 0.03375527426160337,
+    "0.5": 0.06751054852320675
+   },
+   "share_already_failing": 0.012658227848101266,
+   "share_R_above": {
+    "30": 0.029535864978902954,
+    "46": 0.029535864978902954,
+    "60": 0.029535864978902954,
+    "100": 0.029535864978902954
+   },
+   "share_R_unavoidable_by_logic": 0.029535864978902954
+  },
+  {
+   "problem": "stopped_obstacle_odd",
+   "n_valid": 250,
+   "lat_for_R": 0.2,
+   "dT_quantiles": {
+    "p05": 0.703125,
+    "p50": 0.87744140625,
+    "p95": 1.048828125
+   },
+   "ds_quantiles": {
+    "p05": 3.203125,
+    "p50": 6.796875,
+    "p95": 12.578125
+   },
+   "R_quantiles": {
+    "p05": 6.34765625,
+    "p50": 14.16015625,
+    "p95": 25.170898437499993
+   },
+   "share_dT_below": {
+    "0.1": 0.0,
+    "0.2": 0.0,
+    "0.3": 0.0,
+    "0.5": 0.0
+   },
+   "share_already_failing": 0.0,
+   "share_R_above": {
+    "30": 0.004,
+    "46": 0.0,
+    "60": 0.0,
+    "100": 0.0
+   },
+   "share_R_unavoidable_by_logic": 0.0
+  }
+ ],
+ "range_curve": [
+  {
+   "v_ego": 5,
+   "R_ideal": 2.44140625,
+   "R_lat": 3.41796875,
+   "R_physik": 3.0927624872579003
+  },
+  {
+   "v_ego": 8,
+   "R_ideal": 5.859375,
+   "R_lat": 7.32421875,
+   "R_physik": 6.477471967380224
+  },
+  {
+   "v_ego": 10,
+   "R_ideal": 8.30078125,
+   "R_lat": 10.7421875,
+   "R_physik": 9.371049949031601
+  },
+  {
+   "v_ego": 12,
+   "R_ideal": 11.71875,
+   "R_lat": 14.6484375,
+   "R_physik": 12.774311926605503
+  },
+  {
+   "v_ego": 14,
+   "R_ideal": 15.625,
+   "R_lat": 20.01953125,
+   "R_physik": 16.687257900101937
+  },
+  {
+   "v_ego": 16.67,
+   "R_ideal": 21.484375,
+   "R_lat": 28.80859375,
+   "R_physik": 22.70544062181448
+  }
+ ]
+}
