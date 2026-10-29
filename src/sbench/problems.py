@@ -228,4 +228,28 @@ PROBLEMS = {
 
 
 def make_problem(name: str) -> Problem:
+    """Namen: 'lead_brake' …; ATS: 'ats_ped' oder 'ats_stopped', optional '@<suite>' (z. B. 'ats_ped@radar+kamera')."""
+    if name.startswith("ats_"):
+        from dataclasses import replace
+
+        from .ats import AtsOdd, AtsPedestrian, AtsStopped, AtsSystem
+
+        head, _, suite = name.partition("@")
+        base, _, opts = head.partition(":")
+        odd, sy = AtsOdd(), AtsSystem(suite=suite or "radar+kamera+lidar")
+        for kv in filter(None, opts.split(",")):  # z. B. ats_ped:v=6.9,a_e=4@radar+kamera
+            k, v = kv.split("=")
+            if k == "v":
+                odd = replace(odd, v_max=float(v))
+            elif k == "a_e":
+                sy = replace(sy, a_e=float(v))
+            elif k == "brake":
+                sy = replace(sy, brake_scale=float(v) / 9.0)  # max. Notverzögerung in m/s²
+            elif k == "age":
+                sy = replace(sy, max_age=float(v))
+            else:
+                raise KeyError(k)
+        p = {"ats_ped": AtsPedestrian, "ats_stopped": AtsStopped}[base](odd, sy)
+        p.name = name
+        return p
     return PROBLEMS[name]()

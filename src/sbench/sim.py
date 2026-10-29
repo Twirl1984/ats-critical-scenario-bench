@@ -50,10 +50,10 @@ def ego_speed_from_wheel(w: float, a: float, iters: int = 6) -> float:
     return max(v, 0.0)
 
 
-def rss_ratio(v: float, vr: float, s: float) -> float:
+def rss_ratio(v: float, vr: float, s: float, a_e: float = A_E, a_l: float = A_L) -> float:
     """Verhältnis RSS-Sicherheitsabstand / Ist-Abstand (>1: Abstand unterschritten)."""
     vl = max(v + vr, 0.0)
-    d = v * RHO + v * v / (2.0 * A_E) - vl * vl / (2.0 * A_L) + S_MIN
+    d = v * RHO + v * v / (2.0 * a_e) - vl * vl / (2.0 * a_l) + S_MIN
     return max(d, 0.0) / max(s, 0.1)
 
 
@@ -119,6 +119,9 @@ class Scenario:
     decel: float  # Zielverzögerung (bei cut_in: nach dem Einscheren)
     dur: float = 0.0  # Dauer Querbewegung (cut_in)
     v_set: float | None = None  # ACC-Wunschgeschwindigkeit; None = globaler V_SET
+    p_in: float = 0.5  # Querfortschritt, ab dem das Ziel im Fahrschlauch ist (Kollisionsrelevanz)
+    p_out: float = float('inf')  # Querfortschritt, ab dem es den Schlauch wieder verlässt (Fußgänger)
+    p_vis: float = 0.0  # Verdeckung: frühester Querfortschritt, ab dem irgendein Sensor das Ziel sehen kann
 
     def target_speed(self, t: float) -> float:
         if self.kind == "lead_brake":
@@ -132,7 +135,7 @@ class Scenario:
 
     @property
     def event_time(self) -> float:
-        return self.t_ev if self.kind == "lead_brake" else self.t_ev + 0.4 * self.dur
+        return self.t_ev if self.kind == "lead_brake" else self.t_ev + min(0.4, self.p_in) * self.dur
 
 
 @dataclass
@@ -171,7 +174,7 @@ def simulate(
         t = k * DT
         v_t = sc.target_speed(t)
         p = sc.progress(t)
-        visible, overlap = p >= 0.4, p >= 0.5
+        visible, overlap = p >= 0.4, sc.p_in <= p < sc.p_out
         s = x_t - x_e
         if overlap and s <= 0.0:
             collision, impact = True, max(v_e - v_t, 0.0)

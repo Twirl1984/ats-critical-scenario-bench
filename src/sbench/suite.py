@@ -18,7 +18,7 @@ from dataclasses import dataclass, replace
 import numpy as np
 
 from .chain import _Link
-from .sim import (DT, G, T_END, V_SET, TAU_ACT, TTC_CAP, Scenario, SensorConfig, SimResult, acc_cmd, aeb_stage,
+from .sim import (DT, G, T_END, V_SET, A_E, TAU_ACT, TTC_CAP, Scenario, SensorConfig, SimResult, acc_cmd, aeb_stage,
                   ego_speed_from_wheel, rss_ratio, simulate, wheel_speed)
 from .world import Aged, LidarScan, RangeArray, RangeReading, VehicleWorldModel
 
@@ -112,28 +112,28 @@ class MultiSourceWorldModel(VehicleWorldModel):
         return out
 
 
-def _measure(spec: SensorSpec, rng, env: Env, s, vr, vis_p, stationary, noise):
+def _measure(spec: SensorSpec, rng, env: Env, s, vr, vis_p, stationary, noise, p_vis=0.0, ego: SensorConfig = SensorConfig()):
     """Eine Messung. Rückgabe (Distanz, Rate|None, ist_geist). Distanz=range_max → „frei"."""
     if rng is not None and rng.random() < spec.ghost * noise:
         return float(rng.uniform(8, 50)), float(-rng.uniform(3, 15)), True
-    detected = vis_p >= spec.p_det and s > 0
+    detected = vis_p >= max(spec.p_det, p_vis) and s > 0
     if detected:
         pd = spec.pd(s, env.m(spec.kind), stationary)
         detected = pd >= 1.0 or (rng.random() < pd if rng is not None else pd >= 0.5)
     if not detected:
         return float(min(spec.range_max, 1e4)), None, False
     sg = spec.sigma(s) * noise
-    d = s + (rng.normal(0, sg) if rng is not None and sg > 0 else 0.0)
+    d = s * (1.0 + ego.s_scale) + ego.s_bias + (rng.normal(0, sg) if rng is not None and sg > 0 else 0.0)
     rate = None
     if spec.sig_rate is not None:
-        rate = vr + (rng.normal(0, spec.sig_rate) * noise if rng is not None else 0.0)
+        rate = vr + ego.vr_bias + (rng.normal(0, spec.sig_rate) * noise if rng is not None else 0.0)
     return max(d, 0.1), rate, False
 
 
 def simulate_suite(sc: Scenario, suite=SUITES["radar+kamera+lidar"], env: Env = ENVS["klar_tag"],
                    ego: SensorConfig = SensorConfig(), max_age: float = 0.5, ctrl: str = "aeb",
                    trace: bool = False, seed: int = 0, blind_decel: float = -3.0, grace: float = 0.5,
-                   hold_s: float = 0.8) -> SimResult:
+                   hold_s: float = 0.8, a_e: float = A_E, brake_scale: float = 1.0) -> SimResult:
     if ctrl == "oracle":
         return simulate(sc, ctrl="oracle", trace=trace)
     ideal = all(sp.kind == "ideal" for sp in suite)
@@ -150,14 +150,14 @@ def simulate_suite(sc: Scenario, suite=SUITES["radar+kamera+lidar"], env: Env = 
     collision, impact = False, 0.0
     blind_s, ghosts, v_min = 0.0, 0, sc.v_e0
     prev_obs, rate_fd = None, 0.0
-    stationary_target = sc.v_t0 < 2.0 and sc.decel == 0.0
+    stationary_target = sc.kind == "lead_brake" and sc.v_t0 < 2.0 and sc.decel == 0.0
     tr = {k: [] for k in ("t", "s", "ve", "vt", "a", "w", "vr", "f_true", "f_meas", "ttc")} if trace else None
 
     for k in range(n):
         t = k * DT
         v_t = sc.target_speed(t)
         p = sc.progress(t)
-        overlap = p >= 0.5
+        overlap = sc.p_in <= p < sc.p_out
         s = x_t - x_e
         if overlap and s <= 0.0:
             collision, impact = True, max(v_e - v_t, 0.0)
@@ -169,7 +169,7 @@ def simulate_suite(sc: Scenario, suite=SUITES["radar+kamera+lidar"], env: Env = 
         for sp in suite:
             if t + 1e-9 >= nxt[sp.name]:
                 nxt[sp.name] += 1.0 / sp.hz
-                d, rate, ghost = _measure(sp, rng, env, s, vr, p, stat, noise)
+                d, rate, ghost = _measure(sp, rng, env, s, vr, p, stat, noise, sc.p_vis, ego)
                 ghosts += ghost
                 at = t + sp.latency + ego.delay
                 if sp.kind == "lidar":
@@ -205,8 +205,8 @@ def simulate_suite(sc: Scenario, suite=SUITES["radar+kamera+lidar"], env: Env = 
                         rate_fd = 0.5 * rate_fd + 0.5 * (d_obs - prev_obs[0]) / (t - prev_obs[1])
                     rate = rate_fd
                 prev_obs = (d_obs, t)
-            f_meas = 0.0 if free else rss_ratio(v_hat, rate, d_obs)
-            stage = aeb_stage(f_meas)
+            f_meas = 0.0 if free else rss_ratio(v_hat, rate, d_obs, a_e)
+            stage = aeb_stage(f_meas) * brake_scale
             if stage < latched:
                 t_trig = t
             latched = min(latched, stage)
@@ -223,7 +223,7 @@ def simulate_suite(sc: Scenario, suite=SUITES["radar+kamera+lidar"], env: Env = 
                 ttc = min(s / closing, TTC_CAP)
                 min_ttc = min(min_ttc, ttc)
         if tr is not None:
-            f_true = rss_ratio(v_e, vr, s)
+            f_true = rss_ratio(v_e, vr, s, a_e)
             for key, val in zip(tr.keys(), (t, s, v_e, v_t, a_act, w_true, vr, f_true, f_meas, ttc)):
                 tr[key].append(val)
         a_act += (a_cmd - a_act) * DT / TAU_ACT

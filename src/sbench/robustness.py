@@ -147,10 +147,11 @@ def scenario_robustness(problem, u, tol: Tolerances = Tolerances(), n_mc: int = 
         above = np.flatnonzero(tr["f_true"] >= 1.0)  # Auslöseschwelle der AEB (Stufe 1)
         k_crit = int(above[0]) if len(above) else int(np.argmax(tr["f_true"]))
         x = np.array([tr["w"][k_crit], tr["vr"][k_crit], tr["s"][k_crit], tr["a"][k_crit]])
-        J = jacobian(decision_signal, x)
+        dfn = problem.decision_fn() if hasattr(problem, "decision_fn") else decision_signal
+        J = jacobian(dfn, x)
         dx = input_tolerances(x, tol)
         worst, rss = linear_bounds(J, dx)
-        mcd = monte_carlo_delta(decision_signal, x, dx, n=500, seed=seed)
+        mcd = monte_carlo_delta(dfn, x, dx, n=500, seed=seed)
         fdot = np.gradient(tr["f_true"], tr["t"])
         time_term = float(np.abs(fdot[max(k_crit - 1, 0): k_crit + 2]).max() * tol.delay)  # ḟ am Auslösepunkt · ΔT
         meas = problem.simulate(sc, _sensor_from(tol_d), trace=True).trace  # Sensorik am Toleranzrand

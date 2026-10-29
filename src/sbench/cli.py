@@ -100,6 +100,21 @@ def cmd_trace(a):
     print("fertig:", a.out)
 
 
+def cmd_atsreport(a):
+    from .ats_report import analyse
+
+    print(json.dumps(analyse(a.run_json, a.out, a.top), indent=2, default=float))
+
+
+def cmd_devimpact(a):
+    from .ats_report import deviation_impact
+
+    r = deviation_impact(a.problem, a.n)
+    Path(a.out).mkdir(exist_ok=True)
+    (Path(a.out) / (a.problem.replace(":", "_").replace("=", "") + "_devimpact.json")).write_text(json.dumps(r))
+    print(json.dumps(r, indent=2))
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="sbench")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -138,6 +153,16 @@ def main(argv=None):
     tr.add_argument("--n", type=int, default=250)
     tr.add_argument("--out", default="results_suite")
     tr.set_defaults(fn=cmd_trace)
+    ar = sub.add_parser("atsreport", help="ATS: Charakterisierung der gefundenen kritischen Szenarien")
+    ar.add_argument("run_json")
+    ar.add_argument("--top", type=int, default=25)
+    ar.add_argument("--out", default="results_ats")
+    ar.set_defaults(fn=cmd_atsreport)
+    di = sub.add_parser("devimpact", help="ATS: Anteil der Fehlerrate durch zulässige Messabweichung")
+    di.add_argument("--problem", default="ats_ped")
+    di.add_argument("--n", type=int, default=600)
+    di.add_argument("--out", default="results_ats")
+    di.set_defaults(fn=cmd_devimpact)
     a = ap.parse_args(argv)
     a.fn(a)
 

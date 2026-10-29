@@ -1,0 +1,1 @@
+{"problem": "ats_ped:v=6.9,brake=6,a_e=4", "n": 1500, "n_valid": 1499, "rate_nominal": 0.01, "rate_prior_dev_noise": 0.010666666666666666, "rate_any_tolerance_corner": 0.012}

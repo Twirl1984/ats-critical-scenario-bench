@@ -1,0 +1,17 @@
+{
+ "problem": "ats_ped:v=6.9,brake=6,a_e=4",
+ "n_near_critical": 576,
+ "n_flip_brute": 5,
+ "n_flip_pred": 5.0,
+ "hit_rate_on_brute_flips": 1.0,
+ "false_alarm": 0,
+ "median_gap_pred_vs_brute": 0.0,
+ "cost_ratio_sims_per_scenario": "11 statt 33",
+ "dominant_counts": {
+  "s_bias": 9,
+  "w_scale": 5,
+  "vr_bias": 0,
+  "a_bias": 0,
+  "delay": 562
+ }
+}

@@ -72,3 +72,15 @@ Sensormodelle (Radar/Lidar/Kamera, FAU/fiveD, OSI/FMU) werden später hinter die
 * `suite_study.py`, `budget.py`, `trace_study.py`, `export_xlsx.py`
 * `data/r157_alks.json` – Anforderungsdatei aus dem compliance-Repo (Twirl1984/orchestrated_automotive_compliance_audit_system_v3_crewai-project)
 * Ergebnisse und Grenzen: `docs/ERGEBNISSE.md`. Alle Sensorparameter sind Platzhalter.
+
+## ATS (autonomes Shuttle, Level 4) als Gesamtsystem-Suchproblem
+
+    sbench run --problem ats_ped --budget 300 --seeds 8 --constrained     # 12D: Szenario + Umgebung + Messabweichung
+    sbench run --problem "ats_ped:v=6.9,brake=6,a_e=4"                     # ODD-/Systemvariante (v in m/s, brake = max. Verzögerung)
+    sbench reference --problem ats_ped --n 40000                           # MC-Referenz für P_f
+    sbench atsreport results_ats/ats_ped_run.json                          # Charakterisierung + Robustheitsverdikt
+    sbench devimpact --problem ats_ped                                     # Anteil der Fehlerrate durch zulässige Abweichung
+    python -m sbench.worstcase ats_ped 3000                                # Vorabschätzung Worst-Case-Ecke vs. 32 Ecken
+
+`ats.py` leitet den Suchraum aus `AtsOdd` ab und simuliert das Gesamtsystem (Sensorsuite → Weltmodell → RSS/AEB → Fahrzeug mit Latenz).
+Alle ATS-, Sensor- und Bremsparameter sind Annahmen; öffentlich belegt ist nur die 2getthere-Designanforderung „60 km/h oder höher".

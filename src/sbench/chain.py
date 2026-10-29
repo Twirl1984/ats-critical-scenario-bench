@@ -110,7 +110,7 @@ def simulate_chain(
         t = k * DT
         v_t = sc.target_speed(t)
         p = sc.progress(t)
-        visible, overlap = p >= 0.4, p >= 0.5
+        visible, overlap = p >= 0.4, sc.p_in <= p < sc.p_out
         s = x_t - x_e
         if overlap and s <= 0.0:
             collision, impact = True, max(v_e - v_t, 0.0)
