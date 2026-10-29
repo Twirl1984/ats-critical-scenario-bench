@@ -27,3 +27,11 @@ def test_permutation_p_detects_strong_negative_and_not_null():
 def test_holm_stepdown():
     r = holm({"a": 0.01, "b": 0.04, "c": 0.03})
     assert r["a"]["reject_H0"] and not r["b"]["reject_H0"] and not r["c"]["reject_H0"]
+
+
+def test_nan_statistic_never_rejects():
+    from sbench.hyp_slip import perm_p_partial
+    x = np.arange(10.0)
+    const = np.ones(10)
+    assert perm_p_less(spearman, x, const, 99, 0) == 1.0
+    assert perm_p_partial(x, const, x[::-1].copy(), 99, 0) == 1.0

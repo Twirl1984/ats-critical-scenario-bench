@@ -62,7 +62,7 @@ def train_estimators(quick: bool = False) -> list[dict]:
     out = []
     for k, (alpha, hid, sig) in enumerate(grid):
         y = s + np.random.default_rng(100 + k).normal(0, sig, s.size)
-        m = MLPRegressor(hid, activation="tanh", solver="lbfgs", alpha=alpha, max_iter=3000, random_state=k)
+        m = MLPRegressor(hidden_layer_sizes=hid, activation="tanh", solver="lbfgs", alpha=alpha, max_iter=3000, random_state=k)
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             m.fit(np.c_[a / 10, v / 20], y * 10)
@@ -161,13 +161,18 @@ def partial_spearman(x, y, z) -> float:
 def perm_p_less(stat_fn, x, y, n_perm: int, seed: int, *extra) -> float:
     rng = np.random.default_rng(seed)
     obs = stat_fn(x, y, *extra)
+    if not np.isfinite(obs):  # z. B. konstante Zielgröße: kein Test möglich, nie verwerfen
+        return 1.0
     cnt = sum(stat_fn(rng.permutation(x), y, *extra) <= obs for _ in range(n_perm))
     return (cnt + 1) / (n_perm + 1)
 
 
 def perm_p_partial(J, M, R, n_perm: int, seed: int) -> float:
     rj, rm = _resid(_rank(J), _rank(R)), _resid(_rank(M), _rank(R))
-    obs = np.corrcoef(rj, rm)[0, 1]
+    with np.errstate(all="ignore"):
+        obs = np.corrcoef(rj, rm)[0, 1]
+    if not np.isfinite(obs):
+        return 1.0
     rng = np.random.default_rng(seed)
     cnt = sum(np.corrcoef(rng.permutation(rj), rm)[0, 1] <= obs for _ in range(n_perm))
     return (cnt + 1) / (n_perm + 1)

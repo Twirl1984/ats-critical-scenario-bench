@@ -42,9 +42,12 @@ class Problem:
     def nll(self, u) -> float:
         return float(-_beta_logpdf(np.asarray(u, float), self.beta_a, self.beta_b).sum())
 
-    def simulate(self, sc, sensor: SensorConfig = SensorConfig(), ctrl: str = "aeb", trace: bool = False, seed: int = 0):
-        """Einheitlicher Simulationseinstieg (Robustheitsmodul und Metriken gehen hierüber)."""
-        return simulate(sc, sensor, ctrl=ctrl, trace=trace, seed=seed)
+    def simulate(self, sc, sensor: SensorConfig = SensorConfig(), ctrl: str = "aeb", trace: bool = False, seed: int = 0, **kw):
+        """Einheitlicher Simulationseinstieg (Robustheitsmodul und Metriken gehen hierüber).
+
+        ``kw`` reicht ``oracle_a_max`` und ``slip_fn`` an ``sim.simulate`` durch.
+        """
+        return simulate(sc, sensor, ctrl=ctrl, trace=trace, seed=seed, **kw)
 
     def evaluate(self, u) -> tuple[float, float]:
         return self.simulate(self.decode(u)).g, self.nll(u)
