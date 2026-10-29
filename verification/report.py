@@ -47,10 +47,11 @@ def main():
          "| --- | --- | --- |"]
     for k, v in rep["tests"].items():
         L.append(f"| {k} | {v.get('passed', 0)} | {v.get('failed', 0)} |")
-    L += ["", "## Mutation-Tests (mutmut)", "", "| Modul | getötet | überlebt | ohne Test | Score |", "| --- | --- | --- | --- | --- |"]
+    L += ["", "## Mutation-Tests (mutmut)", "", "Score = getötet / alle bewerteten Mutanten; Abstürze (segfault) zählen nicht als getötet.", "",
+          "| Modul | getötet | überlebt | ohne Test | Absturz | Score |", "| --- | --- | --- | --- | --- | --- |"]
     for k, v in rep["mutation"].items():
         L.append(f"| {k} | {v.get('killed', 0) + v.get('timeout', 0)} | {v.get('survived', 0)} | "
-                 f"{v.get('no tests', 0)} | {v.get('score')} |")
+                 f"{v.get('no tests', 0)} | {v.get('segfault', 0)} | {v.get('score')} |")
     (HERE / "REPORT.md").write_text("\n".join(L) + "\n")
     print("\n".join(L))
 

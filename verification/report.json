@@ -1,0 +1,47 @@
+{
+ "mutation": {
+  "budget": {
+   "no tests": 104,
+   "score": 0.0
+  },
+  "probe_study": {
+   "killed": 139,
+   "no tests": 162,
+   "score": 0.38,
+   "survived": 65
+  },
+  "robustness": {
+   "killed": 357,
+   "score": 0.667,
+   "survived": 178
+  },
+  "sim": {
+   "killed": 287,
+   "score": 0.539,
+   "segfault": 245
+  },
+  "world": {
+   "killed": 113,
+   "no tests": 10,
+   "score": 0.729,
+   "survived": 32
+  }
+ },
+ "tests": {
+  "Differential/Metamorph": {
+   "passed": 8
+  },
+  "Golden-Regression": {
+   "passed": 10
+  },
+  "Property/Fuzz (Hypothesis, derandomisiert)": {
+   "passed": 10
+  },
+  "Statistik-Bausteine (Experimentcode)": {
+   "passed": 5
+  },
+  "Unit": {
+   "passed": 44
+  }
+ }
+}
