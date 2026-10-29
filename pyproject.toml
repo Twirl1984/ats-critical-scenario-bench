@@ -21,3 +21,12 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.mutmut]
+paths_to_mutate = ["src/sbench/"]
+do_not_mutate = ["src/sbench/cli.py", "src/sbench/runner.py", "src/sbench/export_xlsx.py", "src/sbench/ats_report.py",
+                 "src/sbench/suite_study.py", "src/sbench/trace_study.py", "src/sbench/staleness.py", "src/sbench/hyp_slip.py",
+                 "src/sbench/oracle_gap.py", "src/sbench/worstcase.py", "src/sbench/algos/*", "src/sbench/suite.py",
+                 "src/sbench/chain.py", "src/sbench/problems.py", "src/sbench/ats.py", "src/sbench/metrics.py", "src/sbench/__init__.py"]
+tests_dir = ["tests/"]
+also_copy = ["data/", "tests/golden/"]

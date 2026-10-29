@@ -20,6 +20,7 @@ from typing import Generic, Optional, TypeVar
 T = TypeVar("T")
 
 MAX_SENSOR_AGE = 1.0  # s, Standard wie in world.rs
+AGE_EPS = 1e-9  # s, Auflösung von std::time::Duration
 
 
 @dataclass(frozen=True)
@@ -30,7 +31,9 @@ class Aged(Generic[T]):
     at: float
 
     def fresh(self, now: float, max_age: float) -> Optional[T]:
-        return self.value if now - self.at <= max_age else None
+        # Toleranz 1 ns wie die Duration-Auflösung in world.rs; ohne sie gilt ein genau max_age alter Wert
+        # wegen Gleitkomma-Rundung (z. B. 1.05 - 1.0 > 0.05) teils schon als veraltet.
+        return self.value if now - self.at <= max_age + AGE_EPS else None
 
     def age(self, now: float) -> float:
         return now - self.at

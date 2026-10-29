@@ -42,11 +42,16 @@ def wheel_speed(v: float, a: float) -> float:
     return v * (1.0 + slip(a, v)) / R_W
 
 
-def ego_speed_from_wheel(w: float, a: float, iters: int = 6) -> float:
-    """Fahrzeuggeschwindigkeit aus Raddrehzahl, Schlupf-kompensiert (Fixpunkt, da slip=f(a,v))."""
+def ego_speed_from_wheel(w: float, a: float, iters: int = 6, slip_fn=None) -> float:
+    """Fahrzeuggeschwindigkeit aus Raddrehzahl, Schlupf-kompensiert (Fixpunkt, da slip=f(a,v)).
+
+    ``slip_fn(a, v)`` ersetzt das physikalische Schlupfmodell im *Schätzer* (z. B. ein gelerntes Netz);
+    die Strecke selbst rechnet weiter mit ``slip``.
+    """
+    sf = slip if slip_fn is None else slip_fn
     v = w * R_W
     for _ in range(iters):
-        v = w * R_W / (1.0 + slip(a, v))
+        v = w * R_W / (1.0 + sf(a, v))
     return max(v, 0.0)
 
 
@@ -57,9 +62,9 @@ def rss_ratio(v: float, vr: float, s: float, a_e: float = A_E, a_l: float = A_L)
     return max(d, 0.0) / max(s, 0.1)
 
 
-def decision_signal(w: float, vr: float, s: float, a: float) -> float:
+def decision_signal(w: float, vr: float, s: float, a: float, slip_fn=None) -> float:
     """Das Entscheidungssignal f(w, vr, s, a), auf dem die AEB-Auslösung basiert."""
-    return rss_ratio(ego_speed_from_wheel(w, a), vr, s)
+    return rss_ratio(ego_speed_from_wheel(w, a, slip_fn=slip_fn), vr, s)
 
 
 def aeb_stage(f: float) -> float:
@@ -155,8 +160,14 @@ def simulate(
     ctrl: str = "aeb",
     trace: bool = False,
     seed: int = 0,
+    oracle_a_max: float | None = None,
+    slip_fn=None,
 ) -> SimResult:
-    """Simuliert ein Szenario. g = -(Aufprallgeschwindigkeit+0.1) bei Kollision, sonst min. TTC."""
+    """Simuliert ein Szenario. g = -(Aufprallgeschwindigkeit+0.1) bei Kollision, sonst min. TTC.
+
+    ``oracle_a_max``: Bremsgrenze der Plattform für das Oracle (None = Reibgrenze µ·g, bisheriges Verhalten).
+    ``slip_fn``: Schlupfmodell im Geschwindigkeitsschätzer (None = physikalisches Modell).
+    """
     n = int(T_END / DT)
     rng = np.random.default_rng(seed) if sensor.noise > 0 else None
     nd = int(round(sensor.delay / DT))
@@ -197,10 +208,11 @@ def simulate(
         m_vis, m_w, m_a, m_s, m_vr = buf[0]
 
         f_true = rss_ratio(v_e, vr, s) if visible else 0.0
-        f_meas = decision_signal(m_w, m_vr, m_s, m_a) if m_vis else 0.0
+        f_meas = decision_signal(m_w, m_vr, m_s, m_a, slip_fn) if m_vis else 0.0
 
         if ctrl == "oracle":
-            a_cmd = -a_phys if t >= sc.event_time else acc_cmd(v_e, s, vr, visible, sc.v_set or V_SET)
+            a_brk = a_phys if oracle_a_max is None else min(a_phys, oracle_a_max)
+            a_cmd = -a_brk if t >= sc.event_time else acc_cmd(v_e, s, vr, visible, sc.v_set or V_SET)
         else:
             stage = aeb_stage(f_meas)
             latched = min(latched, stage)
@@ -209,7 +221,7 @@ def simulate(
             if latched < 0.0:
                 a_cmd = latched
             else:
-                v_hat = ego_speed_from_wheel(m_w, m_a)
+                v_hat = ego_speed_from_wheel(m_w, m_a, slip_fn=slip_fn)
                 a_cmd = acc_cmd(v_hat, m_s, m_vr, m_vis, sc.v_set or V_SET)
         a_cmd = min(max(a_cmd, -a_phys), 2.0)
 

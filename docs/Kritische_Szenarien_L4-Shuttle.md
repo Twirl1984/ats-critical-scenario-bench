@@ -37,6 +37,61 @@ Kritikalitätsmaß g (kleinste TTC, bei Kollision negative Aufprallgeschwindigke
 
 Implementiert ist das als ODD-gesteuertes Problem mit 12 Dimensionen (Fußgängerquerung): 6 Szenarioparameter, 1 Umgebung, 5 Abweichungen (Distanz-Bias, Raddrehzahl-Skalierung, Raten-Bias, IMU-Bias, Zusatzlatenz). Alle Zahlenwerte der Sensoren und Toleranzen sind Annahmen und müssen aus Datenblatt und Messung identifiziert werden.
 
+## Gesamtmodell: Gleichungen, Blockbild, KI-Stellen und Prozesskette
+
+![Gesamtmodell als Blockbild](figures/fig_model_block.png)
+
+**Gleichungen des implementierten Modells** (1D-Längsdynamik, alle Zahlenwerte Annahmen; Code: `sim.py`, `suite.py`, `world.py`).
+
+Strecke (Fahrzeug mit Aktor, physikalischer Schlupf):
+
+```latex
+\dot x = v,\qquad \dot v = a,\qquad \dot a = \frac{a_{\mathrm{cmd}}-a}{\tau_{\mathrm{act}}},\qquad |a|\le \min(\mu g,\ a_{\max}),\qquad
+\omega = \frac{v\,(1+s(a,v))}{R},\qquad s(a,v)=0{,}1\,\frac{a}{g}\Big(1+\frac{2}{1+v/5}\Big)
+```
+
+Sensoren mit Abweichung und Zeitversatz, Weltmodell mit Altersgrenze:
+
+```latex
+y_i(t)=h_i\big(x(t-\tau_i)\big)(1+\varepsilon_i)+b_i+n_i,\qquad
+s_{\mathrm{obs}}(t)=\min_{i:\ t-t_i\le t_{\max}} y_i,\qquad \text{keine frische Quelle}\Rightarrow \text{keine Aussage (nicht „frei“)}
+```
+
+Geschwindigkeitsschätzer (Fixpunkt; hier sitzt das gelernte Teilmodell ŝ), Entscheidung und Regler:
+
+```latex
+\hat v=\frac{\tilde\omega R}{1+\hat s(\tilde a,\hat v)},\qquad
+f=\frac{d_{\mathrm{RSS}}(\hat v,v_r)}{s_{\mathrm{obs}}},\quad d_{\mathrm{RSS}}=\hat v\rho+\frac{\hat v^2}{2a_e}-\frac{v_l^2}{2a_l}+s_{\min},\qquad
+a_{\mathrm{cmd}}=\begin{cases}-4,-7,-9\ \mathrm{m/s^2} & f\ge 1{,}0;\ 1{,}4;\ 2{,}0\ (\text{gehalten})\\ \mathrm{ACC}(\hat v,s_{\mathrm{obs}},v_r) & \text{sonst}\end{cases}
+```
+
+Kritikalität, Suchproblem, Schlauch und Worst-Case-Ecke:
+
+```latex
+g=\begin{cases}\min \mathrm{TTC} & \text{keine Kollision}\\ -(v_{\mathrm{impact}}+0{,}1) & \text{Kollision}\end{cases},\qquad
+\min_{u\in\mathcal U_{\mathrm{ODD}},\ \theta\in\Theta} g(u,\theta),\qquad
+\delta f\lesssim\sum_i\Big|\frac{\partial f}{\partial x_i}\Big|\delta x_i+|\dot f|\,\delta T,\qquad
+\theta^*=-\operatorname{sign}\Big(\frac{\partial g}{\partial\theta}\Big)\odot\mathrm{tol}
+```
+
+**Wo KI und welche Modelle zum Einsatz kommen.**
+
+| Stelle in der Kette | Modell | Stand | Rolle |
+| --- | --- | --- | --- |
+| Schätzer (See) | MLP für den Schlupf ŝ(a, v), tanh, L-BFGS | umgesetzt, Experimente H1/H1b | gelerntes Teilmodell im Regelkreis; Strecke bleibt physikalisch |
+| Suche | Gauß-Prozess mit Expected Improvement (BayesOpt) | umgesetzt | findet die meisten verschiedenen Fehlermuster |
+| Suche | NSGA-II über (g, −log p) | umgesetzt | Kritikalität gegen Wahrscheinlichkeit |
+| Suche | REINFORCE-Gegenspieler (Policy Gradient) | umgesetzt | lernende Szenario-Erzeugung |
+| Suche / Schätzung | Cross-Entropy Importance Sampling, Random-Forest-Surrogat | umgesetzt | seltene Ereignisse, billiges Vorscreening |
+| Wahrnehmung | gelernter Detektor/Tracker | geplant | heute phänomenologische Sensoren (Stufe 1) |
+| Monitor | gelernter Fehlerschätzer / Residuen-Monitor | geplant | Messung gegen Modellschlauch im Betrieb |
+| Regler | gelernter Regler (DeepONet-Typ) | Forschungsfrage | Stabilität bei Approximationsfehler und Latenz |
+| Lokalisierung | 5G/GNSS, Spoofing und Jamming | geplant (`ROADMAP.md`) | korrelierte, gezielte Abweichung als Angriff |
+
+**Prozesskette für Evidenz und Validierung.** Durchgezogen ist umgesetzt, gestrichelt geplant. Code-Verifikation (`tests/`, `verification/`) und wissenschaftliche Experimente (`experiments/`) sind bewusst getrennt: Die erste prüft, ob der Code tut, was er soll, die zweite, was das Modell aussagt.
+
+![Prozesskette Evidenz und Validierung](figures/fig_process_chain.png)
+
 ## Vorabschätzung statt Rechenkraft
 
 Die aus 11 statt 33 Simulationen vorhergesagte Worst-Case-Ecke der Toleranzbox hat in allen Szenarien, in denen die Brute-Force-Suche über alle 32 Ecken eine Kollision findet, ebenfalls eine Kollision erzeugt (19 von 19 und 5 von 5), ohne Fehlalarm. Der Test ist klein und die Latenz dominiert, die Aussage trägt also noch nicht für beliebige Modelle.

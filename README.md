@@ -17,6 +17,17 @@ The system model is a see–think–act chain: phenomenological sensors (radar, 
 | [docs/ERGEBNISSE.md](docs/ERGEBNISSE.md) | Sensor-suite coverage study and back-calculation of requirements (German) |
 | [results_suite/Sensormodelle_Gesamtkette_Abdeckung.xlsx](results_suite/Sensormodelle_Gesamtkette_Abdeckung.xlsx) | Coverage, traceability to UN R157, assumptions, gaps to a real system |
 
+## Repository layout: code tests and experiments are separate
+
+| Folder | Purpose | Run |
+|---|---|---|
+| `tests/` | **Code verification:** unit, golden regression, property-based fuzzing (Hypothesis, derandomised), differential and metamorphic tests | `pytest` |
+| `verification/` | Code verification incl. **mutation testing** (mutmut) and a deterministic report `REPORT.md` | `verification/run.sh` |
+| `experiments/` | **Scientific claims about the model:** pre-registered hypothesis tests with their result files; each folder holds `PREREGISTRATION.md` (committed before the run) and `RESULT.md` | `python -m sbench.hyp_slip [--h1b]` |
+| `results_*` | Study outputs referenced by the documents | see the document |
+
+Experiments so far: **H1** and **H1b** (sensitivity of a learned slip sub-model vs. tolerable latency) — both *not confirmed*; H1b shows that at the assumed tolerances the learned part is not the bottleneck. See `experiments/*/RESULT.md` and `ROADMAP.md`.
+
 **Main results so far (under the stated assumptions):** a 7-evaluation probe predicts the worst tolerance corner and reproduced every brute-force flip in the test set (see the document for numbers and limits); Bayesian optimisation finds the most distinct failure clusters at 300 evaluations; latency dominates the robust failures.
 **Known limitation that matters most:** the avoidability oracle brakes at µ·g, not at the platform limit; the document quantifies the effect.
 
