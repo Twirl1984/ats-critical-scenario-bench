@@ -1,0 +1,84 @@
+{
+ "tolerances": {
+  "s_bias": 0.3,
+  "w_scale": 0.005,
+  "vr_bias": 0.2,
+  "a_bias": 0.2,
+  "delay": 0.04
+ },
+ "g_edge": 1.0,
+ "problems": {
+  "lead_brake_odd": {
+   "label": "Auffahren",
+   "draws": 24000,
+   "prior": {
+    "n_valid": 150,
+    "n_nominal_fail": 0,
+    "n_flips": 0,
+    "found_by_prediction": 0,
+    "found_by_linear": 0,
+    "false_alarm_prediction": 0,
+    "false_alarm_linear": 0,
+    "corner_is_worst_corner": 0.9733333333333334
+   },
+   "edge": {
+    "n_valid": 23,
+    "n_nominal_fail": 0,
+    "n_flips": 0,
+    "found_by_prediction": 0,
+    "found_by_linear": 0,
+    "false_alarm_prediction": 0,
+    "false_alarm_linear": 0,
+    "corner_is_worst_corner": 0.8695652173913043
+   }
+  },
+  "cut_in_odd": {
+   "label": "Einscheren",
+   "draws": 1908,
+   "prior": {
+    "n_valid": 150,
+    "n_nominal_fail": 6,
+    "n_flips": 2,
+    "found_by_prediction": 2,
+    "found_by_linear": 0,
+    "false_alarm_prediction": 0,
+    "false_alarm_linear": 0,
+    "corner_is_worst_corner": 0.94
+   },
+   "edge": {
+    "n_valid": 120,
+    "n_nominal_fail": 27,
+    "n_flips": 11,
+    "found_by_prediction": 11,
+    "found_by_linear": 5,
+    "false_alarm_prediction": 0,
+    "false_alarm_linear": 0,
+    "corner_is_worst_corner": 1.0
+   }
+  },
+  "stopped_obstacle_odd": {
+   "label": "stehendes Hindernis",
+   "draws": 3461,
+   "prior": {
+    "n_valid": 150,
+    "n_nominal_fail": 0,
+    "n_flips": 0,
+    "found_by_prediction": 0,
+    "found_by_linear": 0,
+    "false_alarm_prediction": 0,
+    "false_alarm_linear": 0,
+    "corner_is_worst_corner": 0.9933333333333333
+   },
+   "edge": {
+    "n_valid": 120,
+    "n_nominal_fail": 1,
+    "n_flips": 0,
+    "found_by_prediction": 0,
+    "found_by_linear": 0,
+    "false_alarm_prediction": 0,
+    "false_alarm_linear": 0,
+    "corner_is_worst_corner": 0.9083333333333333
+   }
+  }
+ }
+}

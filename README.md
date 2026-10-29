@@ -1,3 +1,35 @@
+# Critical-scenario search for an L4 shuttle (ATS): see–think–act benchmark
+
+**Status 29 Oct 2026 · research prototype · all sensor, ODD and brake parameters are assumptions, not data of any real vehicle.**
+
+This repository contains `sbench`, a small Python benchmark that
+
+1. derives a search space from an ODD description (scenario parameters × environment × admissible sensor/timing deviations),
+2. predicts the worst-case corner of the tolerance box from a few model evaluations (sensitivity of the full chain) instead of brute force,
+3. compares search algorithms for critical scenarios (random, LHS, Bayesian optimisation, NSGA-II, policy-gradient, cross-entropy importance sampling, surrogate) with plausibility and avoidability checks, and
+4. classifies every finding as `robust_fail`, `fragile` or `robust_pass` under measurement deviation and latency.
+
+The system model is a see–think–act chain: phenomenological sensors (radar, camera, lidar) → world model with age limit → RSS/AEB decision → vehicle with actuator delay (1-D longitudinal).
+
+| Document | Content |
+|---|---|
+| [docs/Kritische_Szenarien_L4-Shuttle.md](docs/Kritische_Szenarien_L4-Shuttle.md) | Concept, equations, results, gap analysis, open mathematical questions (German) |
+| [docs/ERGEBNISSE.md](docs/ERGEBNISSE.md) | Sensor-suite coverage study and back-calculation of requirements (German) |
+| [results_suite/Sensormodelle_Gesamtkette_Abdeckung.xlsx](results_suite/Sensormodelle_Gesamtkette_Abdeckung.xlsx) | Coverage, traceability to UN R157, assumptions, gaps to a real system |
+
+**Main results so far (under the stated assumptions):** a 7-evaluation probe predicts the worst tolerance corner and reproduced every brute-force flip in the test set (see the document for numbers and limits); Bayesian optimisation finds the most distinct failure clusters at 300 evaluations; latency dominates the robust failures.
+**Known limitation that matters most:** the avoidability oracle brakes at µ·g, not at the platform limit; the document quantifies the effect.
+
+```
+pip install -e ".[plot,dev]"
+pytest
+python -m sbench.probe_study          # worst-corner probe test (approx. 10–20 min)
+```
+
+Author: Dr.-Ing. Christoph Funda. Licence: MIT (see `LICENSE`).
+
+---
+
 # sbench – Benchmark für Algorithmen zur Suche kritischer Szenarien
 
 Leichtgewichtiges Python-Framework, um Szenario-Suchalgorithmen fair zu vergleichen **und** die
@@ -52,7 +84,7 @@ Ereignis) vermeidbar. Ohne diese Prüfung „gewinnen" Algorithmen mit physikali
 
 ## See-Think-Act-Kette mit Weltmodell (`chain.py`, `world.py`)
 
-`world.py` ist ein 1:1-Port von `auv-project/src/see-think-rust/src/world.rs` (Empfangszeitstempel je Quelle,
+`world.py` ist ein 1:1-Port des Weltmodells `world.rs` aus einem (nicht öffentlichen) Rust-See-Think-Act-Stack (Empfangszeitstempel je Quelle,
 Altersgrenze `max_age`, konservatives Minimum, „keine Messung ≠ freier Weg"). `chain.py` verbindet Sensoren
 (einfach: Bias/Rauschen/Latenz, Fehlerinjektion `stall`/`repeat`) → Weltmodell → RSS/AEB → Fahrzeug.
 Probleme: `lead_brake_chain`, `chain_a02|a05|a10` (max_age 0.2/0.5/1.0 s), 10D inkl. Einfrier-Parametern.
@@ -60,7 +92,7 @@ Probleme: `lead_brake_chain`, `chain_a02|a05|a10` (max_age 0.2/0.5/1.0 s), 10D i
     sbench staleness --n 4000 --out results_chain   # max_age vs. gültige Kollisionen / Blindzeit
 
 Sensormodelle (Radar/Lidar/Kamera, FAU/fiveD, OSI/FMU) werden später hinter dieselben Nachrichten
-(`LidarScan`, `RangeArray`) gehängt. Tests: `pytest` (31).
+(`LidarScan`, `RangeArray`) gehängt. Tests: `pytest`.
 
 ## Sensor-Suite (Stufe 1), Abdeckung und Traceability
 
@@ -70,7 +102,7 @@ Sensormodelle (Radar/Lidar/Kamera, FAU/fiveD, OSI/FMU) werden später hinter die
 
 * `suite.py` – phänomenologische Sensoren (Radar/Kamera/Lidar), Umgebungen, Gesamtkette inkl. Weltmodell
 * `suite_study.py`, `budget.py`, `trace_study.py`, `export_xlsx.py`
-* `data/r157_alks.json` – Anforderungsdatei aus dem compliance-Repo (Twirl1984/orchestrated_automotive_compliance_audit_system_v3_crewai-project)
+* `data/r157_alks.json` – strukturierte Anforderungen aus UN R157 (ALKS), übernommen aus einem nicht öffentlichen Compliance-Projekt; Zuordnung Anforderung → Szenario ist Ingenieursentscheidung
 * Ergebnisse und Grenzen: `docs/ERGEBNISSE.md`. Alle Sensorparameter sind Platzhalter.
 
 ## ATS (autonomes Shuttle, Level 4) als Gesamtsystem-Suchproblem
@@ -81,6 +113,8 @@ Sensormodelle (Radar/Lidar/Kamera, FAU/fiveD, OSI/FMU) werden später hinter die
     sbench atsreport results_ats/ats_ped_run.json                          # Charakterisierung + Robustheitsverdikt
     sbench devimpact --problem ats_ped                                     # Anteil der Fehlerrate durch zulässige Abweichung
     python -m sbench.worstcase ats_ped 3000                                # Vorabschätzung Worst-Case-Ecke vs. 32 Ecken
+    python -m sbench.probe_study                                           # Einzelsonden (7 statt 32 Auswertungen), Prior vs. Grenzfälle
+    python -m sbench.oracle_gap 6000                                       # Gap 0: Oracle an der Plattform-Bremsgrenze
 
 `ats.py` leitet den Suchraum aus `AtsOdd` ab und simuliert das Gesamtsystem (Sensorsuite → Weltmodell → RSS/AEB → Fahrzeug mit Latenz).
 Alle ATS-, Sensor- und Bremsparameter sind Annahmen; öffentlich belegt ist nur die 2getthere-Designanforderung „60 km/h oder höher".

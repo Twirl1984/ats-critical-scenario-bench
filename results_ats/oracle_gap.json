@@ -1,0 +1,20 @@
+{
+ "ats_ped": {
+  "n": 6000,
+  "a_max": 4.0,
+  "fails": 381,
+  "valid_mu_g": 297,
+  "valid_platform_limit": 163,
+  "pf_valid_mu_g": 0.0495,
+  "pf_valid_platform_limit": 0.027166666666666665
+ },
+ "ats_ped:v=6.9,brake=6,a_e=4": {
+  "n": 6000,
+  "a_max": 6.0,
+  "fails": 46,
+  "valid_mu_g": 44,
+  "valid_platform_limit": 41,
+  "pf_valid_mu_g": 0.007333333333333333,
+  "pf_valid_platform_limit": 0.006833333333333334
+ }
+}
